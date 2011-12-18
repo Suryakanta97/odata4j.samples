@@ -51,8 +51,8 @@ public class AppEngineNorthwindLoader {
   }
 
   private void nuke(ODataConsumer consumer, String entitySetName) {
-    for (OEntity entity : consumer.getEntities(entitySetName).execute().toList())
+    for (OEntity entity : consumer.getEntities(entitySetName)) {
       consumer.deleteEntity(entity).execute();
-
+    }
   }
 }
