@@ -17,7 +17,7 @@ public class HerokuInMemoryProducerFactory implements ODataProducerFactory {
     final InMemoryProducer producer = new InMemoryProducer("HerokuInMemory");
 
     // expose this jvm's thread information (Thread instances) as an entity-set called "Threads"
-    producer.register(Thread.class, Long.class, "Threads", new Func<Iterable<Thread>>() {
+    producer.register(Thread.class, "Threads", new Func<Iterable<Thread>>() {
       public Iterable<Thread> apply() {
         ThreadGroup tg = Thread.currentThread().getThreadGroup();
         while (tg.getParent() != null)
@@ -27,37 +27,38 @@ public class HerokuInMemoryProducerFactory implements ODataProducerFactory {
         return Enumerable.create(threads).take(count);
       }
     }, "Id");
-
+    
+    
     // expose all files in the current directory (File instances) as an entity-set called "Files"
-    producer.register(File.class, String.class, "Files", new Func<Iterable<File>>() {
+    producer.register(File.class, "Files", new Func<Iterable<File>>() {
       public Iterable<File> apply() {
         return Enumerable.create(new File(".").listFiles());
         }
     }, "Name");
 
     // expose current system properties (Map.Entry instances) as an entity-set called "SystemProperties"
-    producer.register(Entry.class, String.class, "SystemProperties", new Func<Iterable<Entry>>() {
+    producer.register(Entry.class, "SystemProperties", new Func<Iterable<Entry>>() {
       public Iterable<Entry> apply() { 
         return (Iterable<Entry>) (Object) System.getProperties().entrySet();
       }
     }, "Key");
 
     // expose current environment variables (Map.Entry instances) as an entity-set called "EnvironmentVariables"
-    producer.register(Entry.class, String.class, "EnvironmentVariables", new Func<Iterable<Entry>>() {
+    producer.register(Entry.class, "EnvironmentVariables", new Func<Iterable<Entry>>() {
       public Iterable<Entry> apply() {
         return (Iterable<Entry>) (Object) System.getenv().entrySet();
       }
     }, "Key");
 
     // expose this producer's entity-types (EdmEntityType instances) as an entity-set called "EdmEntityTypes"
-    producer.register(EdmEntityType.class, String.class, "EdmEntityTypes", new Func<Iterable<EdmEntityType>>() {
+    producer.register(EdmEntityType.class, "EdmEntityTypes", new Func<Iterable<EdmEntityType>>() {
       public Iterable<EdmEntityType> apply() {
         return producer.getMetadata().getEntityTypes();
       }
     }, "FQName");
 
     // expose a current listing of exchange traded funds sourced from an external csv (EtfInfo instances) as an entity-set called "ETFs"
-    producer.register(EtfInfo.class, String.class, "ETFs", Funcs.wrap(new ThrowingFunc<Iterable<EtfInfo>>() {
+    producer.register(EtfInfo.class, "ETFs", Funcs.wrap(new ThrowingFunc<Iterable<EtfInfo>>() {
       public Iterable<EtfInfo> apply() throws Exception {
         return getETFs();
       }
