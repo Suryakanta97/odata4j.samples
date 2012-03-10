@@ -42,8 +42,10 @@ import org.odata4j.expression.NeExpression;
 import org.odata4j.expression.OrderByExpression;
 import org.odata4j.expression.OrderByExpression.Direction;
 import org.odata4j.producer.BaseResponse;
+import org.odata4j.producer.CountResponse;
 import org.odata4j.producer.EntitiesResponse;
 import org.odata4j.producer.EntityIdResponse;
+import org.odata4j.producer.EntityQueryInfo;
 import org.odata4j.producer.EntityResponse;
 import org.odata4j.producer.InlineCount;
 import org.odata4j.producer.ODataProducer;
@@ -128,7 +130,7 @@ public class DatastoreProducer implements ODataProducer {
   }
 
   @Override
-  public EntityResponse getEntity(String entitySetName, OEntityKey entityKey, QueryInfo queryInfo) {
+  public EntityResponse getEntity(String entitySetName, OEntityKey entityKey, EntityQueryInfo queryInfo) {
     EdmEntitySet ees = metadata.getEdmEntitySet(entitySetName);
     Entity e = findEntity(entitySetName, entityKey);
     checkNotFound(entitySetName, entityKey, e);
@@ -243,7 +245,7 @@ public class DatastoreProducer implements ODataProducer {
       } else if (propertyValue instanceof Date) {
         properties.add(OProperties.datetime(name, (Date) propertyValue));
       } else if (propertyValue instanceof Byte) {
-        properties.add(OProperties.byte_(name, (Byte) propertyValue));
+        properties.add(OProperties.sbyte_(name, (Byte) propertyValue));
       }
 
       // Ordinary Java strings stored as properties in Entity objects are limited to 500 characters (DataTypeUtils.MAX_STRING_PROPERTY_LENGTH)
@@ -408,6 +410,16 @@ public class DatastoreProducer implements ODataProducer {
 
   @Override
   public BaseResponse callFunction(EdmFunctionImport name, Map<String, OFunctionParameter> params, QueryInfo queryInfo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public CountResponse getEntitiesCount(String entitySetName, QueryInfo queryInfo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public CountResponse getNavPropertyCount(String entitySetName, OEntityKey entityKey, String navProp, QueryInfo queryInfo) {
     throw new UnsupportedOperationException();
   }
 

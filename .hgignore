@@ -5,3 +5,6 @@ classes
 
 syntax: regexp
 odata4j-appengine/war/WEB-INF/lib/(?!odata).+
+
+syntax: regexp
+^odata4j-appengine/war/WEB-INF/appengine-generated$
