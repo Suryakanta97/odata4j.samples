@@ -28,6 +28,7 @@ import org.odata4j.edm.EdmProperty;
 import org.odata4j.edm.EdmSchema;
 import org.odata4j.edm.EdmSimpleType;
 import org.odata4j.edm.EdmType;
+import org.odata4j.exceptions.NotFoundException;
 import org.odata4j.expression.AndExpression;
 import org.odata4j.expression.BinaryCommonExpression;
 import org.odata4j.expression.BoolCommonExpression;
@@ -53,7 +54,6 @@ import org.odata4j.producer.ODataProducer;
 import org.odata4j.producer.QueryInfo;
 import org.odata4j.producer.Responses;
 import org.odata4j.producer.edm.MetadataProducer;
-import org.odata4j.exceptions.NotFoundException;
 
 import com.google.appengine.api.datastore.DataTypeUtils;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -426,7 +426,7 @@ public class DatastoreProducer implements ODataProducer {
 
   @Override
   public <TExtension extends OExtension<ODataProducer>> TExtension findExtension(Class<TExtension> arg0) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
 }
