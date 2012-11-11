@@ -39,7 +39,7 @@ public class AppEngineNorthwindLoader {
 
   private void load(ODataConsumer northwindJpa, ODataConsumer northwindAppengine, String entitySetName, String... ignoreProperties) {
     final Set<String> ignorePropertySet = Enumerable.create(ignoreProperties).toSet();
-    for (OEntity jpaEntity : northwindJpa.getEntities(entitySetName)) {
+    for (OEntity jpaEntity : northwindJpa.getEntities(entitySetName).execute()) {
       //System.out.println("jpa: " +jpaEntity);
 
       OEntity aeEntity = northwindAppengine.createEntity(entitySetName).properties(Enumerable.create(jpaEntity.getProperties()).where(new Predicate1<OProperty<?>>() {
@@ -52,7 +52,7 @@ public class AppEngineNorthwindLoader {
   }
 
   private void nuke(ODataConsumer consumer, String entitySetName) {
-    for (OEntity entity : consumer.getEntities(entitySetName)) {
+    for (OEntity entity : consumer.getEntities(entitySetName).execute()) {
       consumer.deleteEntity(entity).execute();
     }
   }
